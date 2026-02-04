@@ -8,8 +8,8 @@ __pycache__/
 .Python
 
 # Environment
-.env
-.env.local
+# .env
+# .env.local
 
 # IDEs
 .vscode/
