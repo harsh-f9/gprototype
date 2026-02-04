@@ -1,0 +1,43 @@
+<script type="module">
+  import { getErrorMessage, hideModal, showModal } from "/static/js/utils.js";
+
+  const postId = {{ post.id }};
+
+  const editForm = document.getElementById("editPostForm");
+  editForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(editForm);
+    const postData = Object.fromEntries(formData.entries());
+
+    // Remove post_id from data (it's in the URL, not the body)
+    delete postData.post_id;
+
+    try {
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData),
+      });
+
+      if (response.ok) {
+        document.getElementById("successMessage").textContent = "Post updated successfully!";
+
+        hideModal("editModal");
+        showModal("successModal");
+
+        document.getElementById("successModal").addEventListener("hidden.bs.modal", () => {
+          // page refresh or UI update occurs here
+          location.reload();
+        });
+      } else {
+        const err = await response.json();
+        document.getElementById("errorMessage").textContent = getErrorMessage(err);
+        showModal("errorModal");
+      }
+    } catch (error) {
+      document.getElementById("errorMessage").textContent = "An error occurred. Please try again.";
+      showModal("errorModal");
+    }
+  });
+</script>

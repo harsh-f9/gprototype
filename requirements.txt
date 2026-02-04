@@ -1,0 +1,28 @@
+# Core
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+jinja2==3.1.4
+python-multipart==0.0.12
+pydantic==2.9.0
+pydantic-settings==2.6.0
+email-validator>=2.2.0
+
+# Session management
+itsdangerous==2.2.0
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Development
+ruff==0.7.0
+black==24.10.0
+
+# Database & Auth
+sqlalchemy[asyncio]>=2.0
+aiosqlite>=0.19
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+
+# AI Integration
+httpx>=0.25
+

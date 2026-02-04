@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Onboarding | GreenBridge{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h1 class="form-title">Let's Get Started</h1>
+            <p class="form-subtitle">Answer a few quick questions to help us understand your business better.</p>
+        </div>
+
+        <div class="progress-indicator">
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+        </div>
+
+        {% if error_msg %}
+        <div class="error-message">{{ error_msg }}</div>
+        {% endif %}
+
+        <form action="/onboarding" method="post" id="onboardingForm">
+            <!-- Question 1 -->
+            <div class="toggle-group" data-field="is_manufacturing">
+                <label class="toggle-label">
+                    <div>
+                        <span class="toggle-text">Is your business involved in manufacturing or industrial
+                            operations?</span>
+                        <p class="toggle-description">This includes factories, production facilities, or processing
+                            plants.</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" name="is_manufacturing" value="true">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="toggle-group" data-field="consumes_significant_energy">
+                <label class="toggle-label">
+                    <div>
+                        <span class="toggle-text">Does your business consume significant energy (electricity or
+                            fuel)?</span>
+                        <p class="toggle-description">High energy consumption is common in heavy industries, data
+                            centers, and logistics.</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" name="consumes_significant_energy" value="true">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="toggle-group" data-field="tracks_env_metrics">
+                <label class="toggle-label">
+                    <div>
+                        <span class="toggle-text">Are you tracking any environmental metrics?</span>
+                        <p class="toggle-description">For example: electricity usage, waste generated, water
+                            consumption.</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" name="tracks_env_metrics" value="true">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="toggle-group" data-field="measures_emissions">
+                <label class="toggle-label">
+                    <div>
+                        <span class="toggle-text">Do you currently measure your carbon emissions?</span>
+                        <p class="toggle-description">Even rough estimates count — carbon footprint awareness is a
+                            strong signal.</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" name="measures_emissions" value="true">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="toggle-group" data-field="has_sustainability_goals">
+                <label class="toggle-label">
+                    <div>
+                        <span class="toggle-text">Does your business have documented sustainability goals or
+                            policies?</span>
+                        <p class="toggle-description">Formal commitments to reduce environmental impact or improve
+                            efficiency.</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" name="has_sustainability_goals" value="true">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="toggle-group" data-field="applied_for_esg_loan">
+                <label class="toggle-label">
+                    <div>
+                        <span class="toggle-text">Have you ever applied for a loan linked to environmental or
+                            sustainability performance?</span>
+                        <p class="toggle-description">Green loans, sustainability-linked loans, or similar ESG
+                            financing.</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" name="applied_for_esg_loan" value="true">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="toggle-group" data-field="has_employee_policies">
+                <label class="toggle-label">
+                    <div>
+                        <span class="toggle-text">Does your business have employee welfare, governance, or compliance
+                            policies?</span>
+                        <p class="toggle-description">HR policies, safety standards, or governance frameworks.</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" name="has_employee_policies" value="true">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <a href="/" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary btn-lg">Continue →</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Add visual feedback when toggles are changed
+    document.querySelectorAll('.toggle-group input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const group = this.closest('.toggle-group');
+            if (this.checked) {
+                group.classList.add('selected');
+            } else {
+                group.classList.remove('selected');
+            }
+        });
+    });
+
+    // Handle form submission - convert unchecked checkboxes to false
+    document.getElementById('onboardingForm').addEventListener('submit', function (e) {
+        const checkboxes = this.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            if (!checkbox.checked) {
+                // Create a hidden input with false value
+                const hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = checkbox.name;
+                hidden.value = 'false';
+                this.appendChild(hidden);
+            }
+        });
+    });
+</script>
+{% endblock %}

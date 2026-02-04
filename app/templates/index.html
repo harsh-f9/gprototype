@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}GreenBridge - Sustainable Finance{% endblock %}
+
+{% block content %}
+<div style="text-align: center; max-width: 800px; margin: 0 auto;">
+    <div style="margin-bottom: var(--spacing-2xl);">
+        <h1 style="font-size: var(--font-size-4xl); font-weight: 700; margin-bottom: var(--spacing-lg);">
+            <span
+                style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Sustainable Finance
+            </span>
+            <br>Made Simple
+        </h1>
+        <p style="font-size: var(--font-size-xl); color: var(--color-text-muted); max-width: 600px; margin: 0 auto;">
+            Discover your ESG score, estimate your carbon footprint, and get personalized recommendations
+            for Green Loans and Sustainability-Linked financing.
+        </p>
+    </div>
+
+    <div style="margin-bottom: var(--spacing-2xl);">
+        <a href="/onboarding" class="btn btn-primary btn-lg"
+            style="font-size: var(--font-size-xl); padding: var(--spacing-lg) var(--spacing-2xl);">
+            Start Your Assessment →
+        </a>
+    </div>
+
+    <div class="dashboard-grid" style="margin-top: var(--spacing-2xl); text-align: left;">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">Green Loans</h3>
+                <span class="card-icon">🌱</span>
+            </div>
+            <p style="color: var(--color-text-muted);">
+                Financing specifically for environmental projects — renewable energy,
+                energy efficiency, pollution prevention, and more.
+            </p>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">SLL Financing</h3>
+                <span class="card-icon">📊</span>
+            </div>
+            <p style="color: var(--color-text-muted);">
+                Sustainability-Linked Loans with interest rates tied to your ESG
+                performance — hit your targets, save on interest.
+            </p>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">ESG Readiness</h3>
+                <span class="card-icon">🔍</span>
+            </div>
+            <p style="color: var(--color-text-muted);">
+                Not ready for ESG financing yet? We'll help you understand
+                what steps to take to become eligible.
+            </p>
+        </div>
+    </div>
+
+    {% if success_msg %}
+    <div class="success-message" style="margin-top: var(--spacing-2xl);">{{ success_msg }}</div>
+    {% endif %}
+
+    {% if error_msg %}
+    <div class="error-message" style="margin-top: var(--spacing-2xl);">{{ error_msg }}</div>
+    {% endif %}
+</div>
+{% endblock %}

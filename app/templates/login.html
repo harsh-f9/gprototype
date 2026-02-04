@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Login - GreenBridge{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Login to continue your ESG assessment</p>
+
+        {% if error_msg %}
+        <div class="error-alert">
+            {{ error_msg }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/login" class="auth-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="your@email.com"
+                    autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password"
+                    autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+                Login →
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="/register">Register here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

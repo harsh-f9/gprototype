@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Green Loan Assessment | GreenBridge{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <span class="category-badge category-green">🌱 Green Loan Path</span>
+            <h1 class="form-title">Environmental Data</h1>
+            <p class="form-subtitle">Help us understand your environmental footprint to assess your Green Loan
+                eligibility.</p>
+        </div>
+
+        <div class="progress-indicator">
+            <div class="progress-step completed"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+        </div>
+
+        {% if error_msg %}
+        <div class="error-message">{{ error_msg }}</div>
+        {% endif %}
+
+        <form action="/intake/submit" method="post" id="greenIntakeForm">
+            <input type="hidden" name="category" value="green">
+
+            <div class="form-group">
+                <label class="form-label" for="annual_electricity_kwh">Annual Electricity Usage (kWh)</label>
+                <input type="number" class="form-input" id="annual_electricity_kwh" name="annual_electricity_kwh"
+                    placeholder="e.g., 50000" required min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="annual_fuel_litres">Annual Fuel Usage (Litres)</label>
+                <input type="number" class="form-input" id="annual_fuel_litres" name="annual_fuel_litres"
+                    placeholder="e.g., 5000" required min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="water_consumption_litres">Annual Water Consumption (Litres)</label>
+                <input type="number" class="form-input" id="water_consumption_litres" name="water_consumption_litres"
+                    placeholder="e.g., 100000" required min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="waste_generated_kg_month">Monthly Waste Generated (kg)</label>
+                <input type="number" class="form-input" id="waste_generated_kg_month" name="waste_generated_kg_month"
+                    placeholder="e.g., 500" required min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="renewable_energy_pct">Renewable Energy Usage (%)</label>
+                <input type="number" class="form-input" id="renewable_energy_pct" name="renewable_energy_pct"
+                    placeholder="e.g., 25" required min="0" max="100" step="0.1">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="efficiency_equipment">Efficiency Equipment Installed (Optional)</label>
+                <input type="text" class="form-input" id="efficiency_equipment" name="efficiency_equipment"
+                    placeholder="e.g., Solar panels, LED lighting, VFD motors">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="industry_code">Industry Code (NIC Code, Optional)</label>
+                <input type="text" class="form-input" id="industry_code" name="industry_code" placeholder="e.g., 24100">
+            </div>
+
+            <div class="form-actions">
+                <a href="/onboarding" class="btn btn-secondary">← Back</a>
+                <button type="submit" class="btn btn-primary btn-lg">Get My Score →</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

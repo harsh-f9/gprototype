@@ -1,0 +1,40 @@
+<script type="module">
+  import { getErrorMessage, hideModal, showModal } from "/static/js/utils.js";
+
+  const createForm = document.getElementById("createPostForm");
+
+  createForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(createForm);
+    const postData = Object.fromEntries(formData.entries());
+
+    // TEMPORARY - hardcoded until authorization
+    postData.user_id = 1;
+
+    try {
+      const response = await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        document.getElementById("successMessage").textContent =
+          `Post "${data.title}" created successfully!`;
+
+        hideModal("createPostModal");
+        showModal("successModal");
+        // success modal listener later refreshes/updates the UI
+      } else {
+        const err = await response.json();
+        document.getElementById("errorMessage").textContent = getErrorMessage(err);
+        showModal("errorModal");
+      }
+    } catch (error) {
+      document.getElementById("errorMessage").textContent = "An error occurred. Please try again.";
+      showModal("errorModal");
+    }
+  });
+</script>

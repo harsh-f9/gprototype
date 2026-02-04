@@ -1,0 +1,88 @@
+# Project Context: FastAPI Prototype for Form-Based App
+
+## Goal
+Build a clean, production-ready FastAPI app with server-side rendering (Jinja2 templates) and simple form handling. Focus on shipping a working prototype quickly, then iterate.
+
+## Stack
+- **Backend**: FastAPI + Uvicorn
+- **Templates**: Jinja2 (server-side rendering)
+- **Forms**: HTML forms with POST handlers
+- **Styling**: Minimal CSS (or Tailwind via CDN if needed)
+- **No frontend framework** (no React/Vue/etc.)
+
+## Code Style & Conventions
+
+### Python
+- Use **FastAPI dependency injection** patterns
+- Follow **PEP 8** (enforced by Ruff + Black)
+- Type hints everywhere (Pydantic models for validation)
+- Async route handlers (`async def`) by default
+- Keep routes in `app/routes/`, business logic in `app/services/`
+- Use structured logging (not print statements)
+
+### File Structure
+project/
+├── app/
+│   ├── init.py
+│   ├── main.py              # FastAPI app entry point
+│   ├── config.py            # Settings (use pydantic-settings)
+│   ├── models.py            # Pydantic models for validation
+│   ├── routes/              # Route handlers (blueprints)
+│   │   ├── init.py
+│   │   └── forms.py
+│   ├── services/            # Business logic
+│   │   └── init.py
+│   ├── templates/           # Jinja2 templates
+│   │   ├── base.html
+│   │   └── index.html
+│   └── static/              # CSS, JS, images
+│       └── styles.css
+├── tests/
+├── .env
+├── .gitignore
+├── requirements.txt
+└── README.md
+
+### Templates
+- Use Jinja2 **template inheritance** (`{% extends "base.html" %}`)
+- Include **CSRF protection** (use `starlette.middleware.sessions`)
+- Keep templates simple and semantic (minimal inline styles)
+
+### Forms
+- Use native HTML `<form method="POST">`
+- Parse with `Form(...)` from FastAPI
+- Return `HTMLResponse` with rendered template (not JSON unless API endpoint)
+- Flash messages via session for success/error feedback
+
+## What to Avoid
+- No overengineering (YAGNI principle)
+- No premature optimization
+- No frontend build tools (Vite/Webpack) unless explicitly requested
+- No ORMs yet (add later if needed)
+- No Docker/Kubernetes until we're ready to deploy
+
+## Error Handling
+- Use FastAPI's `HTTPException` for user-facing errors
+- Log unexpected errors with context
+- Show friendly error messages in templates (not stack traces)
+
+## Testing (when we get there)
+- Use `pytest` + `httpx` for route testing
+- Test happy path + validation errors
+- Keep tests fast (no external dependencies unless mocked)
+
+## Tone
+- **Practical, not academic**: Prefer working code over perfect architecture
+- **Explain trade-offs**: If suggesting a pattern, briefly say why
+- **Ship iteratively**: Get v1 working, then refactor
+- **Assume I want clean code**: But don't gold-plate unnecessarily
+
+## When Helping Me
+1. If I ask for a feature, generate the **full working code** (not just snippets)
+2. If there are multiple approaches, briefly mention them but pick one and implement it
+3. If you need clarification, ask—but make reasonable assumptions if minor
+4. Always show where the code goes (file paths)
+5. If introducing a new dependency, mention it and add to requirements.txt
+
+## Current Phase
+🚧 **Phase 1**: Set up basic FastAPI app with one working form (proof of concept)

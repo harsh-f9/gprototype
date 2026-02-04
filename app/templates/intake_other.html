@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}ESG Readiness | GreenBridge{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <span class="category-badge category-other">🔍 ESG Readiness Path</span>
+            <h1 class="form-title">Let's Explore</h1>
+            <p class="form-subtitle">You're on the path to ESG readiness. Tell us more about your business.</p>
+        </div>
+
+        <div class="progress-indicator">
+            <div class="progress-step completed"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+        </div>
+
+        {% if error_msg %}
+        <div class="error-message">{{ error_msg }}</div>
+        {% endif %}
+
+        <form action="/intake/submit" method="post" id="otherIntakeForm">
+            <input type="hidden" name="category" value="other">
+
+            <div class="form-group">
+                <label class="form-label" for="business_info">Tell us about your business</label>
+                <textarea class="form-input" id="business_info" name="business_info" rows="3"
+                    placeholder="Describe your business sector, main activities, and scale" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="existing_docs">Existing Documentation (Optional)</label>
+                <textarea class="form-input" id="existing_docs" name="existing_docs" rows="2"
+                    placeholder="List any existing policies, certifications, or reports you have"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="interest_areas">Areas of Interest</label>
+                <textarea class="form-input" id="interest_areas" name="interest_areas" rows="2"
+                    placeholder="e.g., Water conservation, waste recycling, energy efficiency"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <a href="/onboarding" class="btn btn-secondary">← Back</a>
+                <button type="submit" class="btn btn-primary btn-lg">Get Recommendations →</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

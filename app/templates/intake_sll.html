@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}SLL Assessment | GreenBridge{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <span class="category-badge category-sll">📊 Sustainability-Linked Loan Path</span>
+            <h1 class="form-title">Performance Data</h1>
+            <p class="form-subtitle">Tell us about your business performance and sustainability targets.</p>
+        </div>
+
+        <div class="progress-indicator">
+            <div class="progress-step completed"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+        </div>
+
+        {% if error_msg %}
+        <div class="error-message">{{ error_msg }}</div>
+        {% endif %}
+
+        <form action="/intake/submit" method="post" id="sllIntakeForm">
+            <input type="hidden" name="category" value="sll">
+
+            <div class="form-group">
+                <label class="form-label" for="turnover_last_3_years">Turnover Last 3 Years (INR)</label>
+                <input type="text" class="form-input" id="turnover_last_3_years" name="turnover_last_3_years"
+                    placeholder="e.g., Y1: 50L, Y2: 75L, Y3: 1Cr" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="target_improvement_goals">Target Improvement Goals</label>
+                <textarea class="form-input" id="target_improvement_goals" name="target_improvement_goals" rows="3"
+                    placeholder="e.g., Reduce energy consumption by 15% over 3 years" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="num_employees">Number of Employees</label>
+                <input type="number" class="form-input" id="num_employees" name="num_employees" placeholder="e.g., 50"
+                    required min="1">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="workforce_diversity_stats">Workforce Diversity Stats (Optional)</label>
+                <input type="text" class="form-input" id="workforce_diversity_stats" name="workforce_diversity_stats"
+                    placeholder="e.g., 40% women, 10% PWD">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="safety_incident_count">Safety Incidents (Last 12 Months)</label>
+                <input type="number" class="form-input" id="safety_incident_count" name="safety_incident_count"
+                    placeholder="e.g., 0" required min="0">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="training_programs">Training Programs (Optional)</label>
+                <input type="text" class="form-input" id="training_programs" name="training_programs"
+                    placeholder="e.g., Safety training, Skill development">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="governance_policies">Governance Policies (Optional)</label>
+                <textarea class="form-input" id="governance_policies" name="governance_policies" rows="2"
+                    placeholder="e.g., Anti-corruption policy, Whistleblower mechanism"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <a href="/onboarding" class="btn btn-secondary">← Back</a>
+                <button type="submit" class="btn btn-primary btn-lg">Get My Score →</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

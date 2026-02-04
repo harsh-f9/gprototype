@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}Your ESG Dashboard | GreenBridge{% endblock %}
+
+{% block content %}
+<div class="form-container" style="max-width: 1000px;">
+    <div class="form-header" style="text-align: center; margin-bottom: var(--spacing-2xl);">
+        <h1 class="form-title">Your ESG Assessment</h1>
+        <p class="form-subtitle">Here's a detailed analysis of your sustainability profile.</p>
+
+        <div class="progress-indicator" style="margin-top: var(--spacing-lg);">
+            <div class="progress-step completed"></div>
+            <div class="progress-step completed"></div>
+            <div class="progress-step completed"></div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Category Card -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">Your Category</h3>
+                <span class="card-icon">📋</span>
+            </div>
+            {% if category == "green" %}
+            <span class="category-badge category-green" style="font-size: var(--font-size-lg);">🌱 Green Loan
+                Eligible</span>
+            <p style="margin-top: var(--spacing-md); color: var(--color-text-muted);">
+                Based on your environmental metrics, you're a strong candidate for Green Loan financing.
+            </p>
+            {% elif category == "sll" %}
+            <span class="category-badge category-sll" style="font-size: var(--font-size-lg);">📊 SLL Eligible</span>
+            <p style="margin-top: var(--spacing-md); color: var(--color-text-muted);">
+                Your sustainability goals make you a good candidate for Sustainability-Linked Loans.
+            </p>
+            {% else %}
+            <span class="category-badge category-other" style="font-size: var(--font-size-lg);">🔍 ESG Readiness</span>
+            <p style="margin-top: var(--spacing-md); color: var(--color-text-muted);">
+                You're on the path to ESG readiness. Check our recommendations below.
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- ESG Score Card -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">ESG Score</h3>
+                <span class="card-icon">🎯</span>
+            </div>
+            <div class="score-display">
+                {% if scorecard %}
+                <div class="score-value">{{ scorecard.score }}</div>
+                <div class="score-label">out of 100</div>
+                <span
+                    class="category-badge {% if scorecard.rating == 'A' %}category-green{% elif scorecard.rating == 'B' %}category-sll{% else %}category-other{% endif %}"
+                    style="margin-top: var(--spacing-md);">
+                    Rating: {{ scorecard.rating }}
+                </span>
+                {% else %}
+                <div class="score-value">--</div>
+                <div class="score-label">Not calculated</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Carbon Estimate Card -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">Carbon Footprint</h3>
+                <span class="card-icon">🌍</span>
+            </div>
+            <div class="score-display">
+                {% if carbon_result %}
+                <div class="score-value">{{ "{:,.0f}".format(carbon_result.estimated_carbon) }}</div>
+                <div class="score-label">kg CO₂e / year</div>
+                {% else %}
+                <div class="score-value">--</div>
+                <div class="score-label">No data</div>
+                {% endif %}
+            </div>
+            {% if carbon_result and carbon_result.breakdown %}
+            <div style="margin-top: var(--spacing-md); font-size: var(--font-size-sm); color: var(--color-text-muted);">
+                <div>⚡ Electricity: {{ "{:,.0f}".format(carbon_result.breakdown.electricity) }} kg</div>
+                <div>⛽ Fuel: {{ "{:,.0f}".format(carbon_result.breakdown.fuel) }} kg</div>
+                {% if carbon_result.breakdown.water %}
+                <div>💧 Water: {{ "{:,.0f}".format(carbon_result.breakdown.water) }} kg</div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Score Breakdown Card -->
+        {% if scorecard and scorecard.breakdown %}
+        <div class="dashboard-card" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <h3 class="card-title">Score Breakdown</h3>
+                <span class="card-icon">📊</span>
+            </div>
+            <div class="breakdown-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); margin-top: var(--spacing-md);">
+                {% for metric, points in scorecard.breakdown.items() %}
+                <div class="breakdown-item"
+                    style="background: var(--color-bg); padding: var(--spacing-md); border-radius: var(--radius-md); text-align: center;">
+                    <div class="score-value-sm {% if points > 10 %}score-high{% elif points > 5 %}score-medium{% else %}score-low{% endif %}"
+                        style="font-size: var(--font-size-2xl); font-weight: 700;">
+                        {{ points }}</div>
+                    <div style="font-size: var(--font-size-sm); color: var(--color-text-muted);">{{ metric }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Suggestions Card -->
+        {% if scorecard and scorecard.suggestions %}
+        <div class="dashboard-card" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <h3 class="card-title">Improvement Suggestions</h3>
+                <span class="card-icon">💡</span>
+            </div>
+            <ul class="suggestions-list">
+                {% for suggestion in scorecard.suggestions %}
+                <li class="suggestion-item">
+                    <span class="suggestion-icon">{{ suggestion.icon }}</span>
+                    <div class="suggestion-text">{{ suggestion.text }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- AI Verdict Card -->
+        <div class="dashboard-card ai-verdict-container">
+            <div class="card-header">
+                <h3 class="card-title">🤖 AI Expert Verdict</h3>
+                <span class="card-icon" style="font-size: var(--font-size-lg);">✨</span>
+            </div>
+            <div class="ai-verdict-scroll-area">
+                {% if ai_verdict %}
+                {{ ai_verdict }}
+                {% else %}
+                <p style="color: var(--color-text-muted);">AI verdict is being generated...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions" style="max-width: 500px; margin: var(--spacing-2xl) auto 0;">
+        <a href="/onboarding" class="btn btn-secondary">Start Over</a>
+        <a href="/" class="btn btn-primary btn-lg">Back to Home</a>
+    </div>
+</div>
+
+<style>
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .dashboard-card {
+        background: var(--gradient-card);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-md);
+        transition: transform var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .card-title {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--color-text);
+    }
+
+    .card-icon {
+        font-size: var(--font-size-xl);
+    }
+
+    .score-display {
+        text-align: center;
+        padding: var(--spacing-md) 0;
+    }
+
+    .score-value {
+        font-size: var(--font-size-4xl);
+        font-weight: 700;
+        color: var(--color-primary);
+    }
+
+    .score-label {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+    }
+
+    .ai-verdict-container {
+        grid-column: 1 / -1;
+        background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, rgba(30, 41, 59, 1) 100%);
+        border: 1px solid var(--color-primary);
+        display: flex !important;
+        flex-direction: column;
+        height: 500px;
+    }
+
+    .ai-verdict-scroll-area {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-lg);
+        margin-top: var(--spacing-md);
+        overflow-y: auto;
+        line-height: 1.6;
+        color: var(--color-text);
+        font-size: var(--font-size-base);
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .score-high {
+        color: var(--color-primary);
+    }
+
+    .score-medium {
+        color: var(--color-secondary);
+    }
+
+    .score-low {
+        color: var(--color-warning);
+    }
+</style>
+
+{% endblock %}

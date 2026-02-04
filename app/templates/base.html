@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GreenBridge{% endblock %}</title>
+    <meta name="description" content="GreenBridge - Sustainable Finance Onboarding Platform">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <nav class="nav-container">
+                <a href="/" class="logo">
+                    <span class="logo-icon">🌿</span>
+                    <span class="logo-text">GreenBridge</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/onboarding" class="nav-link nav-link-cta">Get Started</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; 2026 GreenBridge | Sustainable Finance Made Simple</p>
+        </footer>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>
